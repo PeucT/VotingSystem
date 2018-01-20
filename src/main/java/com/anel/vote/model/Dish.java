@@ -1,5 +1,7 @@
 package com.anel.vote.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.OnDelete;
@@ -7,20 +9,21 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
  * Created by PeucT on 13.01.2018.
  */
 @Entity
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "dishes")
 @Table(name = "dishes")
 public class Dish extends AbstractNamedEntity {
 
-    @Column(name = "date_time", nullable = false)
+    @Column(name = "date", nullable = false)
     @NotNull
-    private LocalDateTime dateTime;
+    private LocalDate date;
 
     @Column(name = "price", nullable = false, precision = 10, scale = 2)
     @NotNull
@@ -29,6 +32,7 @@ public class Dish extends AbstractNamedEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonBackReference(value="restaurant-dishes")
     @NotNull
     private Restaurant restaurant;
 
@@ -36,22 +40,22 @@ public class Dish extends AbstractNamedEntity {
 
     }
 
-    public Dish(String name, LocalDateTime dateTime, BigDecimal price) {
-        this(null, name, dateTime, price);
+    public Dish(String name, LocalDate date, BigDecimal price) {
+        this(null, name, date, price);
     }
 
-    public Dish(Integer id, String name, LocalDateTime dateTime, BigDecimal price) {
+    public Dish(Integer id, String name, LocalDate date, BigDecimal price) {
         super(id, name);
-        this.dateTime = dateTime;
+        this.date = date;
         this.price = price;
     }
 
-    public LocalDateTime getDateTime() {
-        return dateTime;
+    public LocalDate getDate() {
+        return date;
     }
 
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
     public BigDecimal getPrice() {

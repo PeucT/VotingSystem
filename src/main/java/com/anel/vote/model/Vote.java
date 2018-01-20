@@ -5,6 +5,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -15,9 +16,13 @@ import java.time.LocalTime;
 @Table(name = "user_votes")
 public class Vote extends AbstractBaseEntity{
 
-    @Column(name = "date_time", nullable = false)
+    @Column(name = "date", nullable = false)
     @NotNull
-    private LocalDateTime dateTime;
+    private LocalDate date;
+
+    @Column(name = "time", nullable = false)
+    @NotNull
+    private LocalTime time;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
@@ -35,23 +40,32 @@ public class Vote extends AbstractBaseEntity{
 
     }
 
-    public Vote(LocalDateTime dateTime, User user, Restaurant restaurant){
-        this(null, dateTime, user, restaurant);
+    public Vote(LocalDate date,LocalTime time, User user, Restaurant restaurant){
+        this(null, date, time, user, restaurant);
     }
 
-    public Vote(Integer id, LocalDateTime dateTime, User user, Restaurant restaurant){
+    public Vote(Integer id, LocalDate date, LocalTime time, User user, Restaurant restaurant){
         super(id);
-        this.dateTime = dateTime;
+        this.date = date;
+        this.time = time;
         this.user = user;
         this.restaurant = restaurant;
     }
 
-    public LocalDateTime getDateTime() {
-        return dateTime;
+    public LocalDate getDate() {
+        return date;
     }
 
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public LocalTime getTime() {
+        return time;
+    }
+
+    public void setTime(LocalTime time) {
+        this.time = time;
     }
 
     public User getUser() {
@@ -74,7 +88,8 @@ public class Vote extends AbstractBaseEntity{
     public String toString() {
         return "Vote{" +
                 "id=" + id +
-                ", dateTime=" + dateTime +
+                ", date=" + date +
+                ", time=" + time +
                 '}';
     }
 }

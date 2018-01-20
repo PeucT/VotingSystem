@@ -1,5 +1,7 @@
 package com.anel.vote.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -15,45 +17,41 @@ import java.util.List;
  * Created by PeucT on 13.01.2018.
  */
 
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "restaurant")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Entity
+@NamedEntityGraph(name = Restaurant.GRAPH_WITH_DISHES, attributeNodes =
+        {
+                @NamedAttributeNode("dishes")
+        })
 @Table(name = "restaurants")
 public class Restaurant extends AbstractNamedEntity{
 
-    // TODO: 13.01.2018 Надо бы что-то решить
-    /*@Column(name = "registered", columnDefinition = "timestamp default now()")
-    @NotNull
-    private Date registered = new Date();*/
+    public static final String GRAPH_WITH_DISHES = "Restaurant.withDishes";
 
     @Column(name = "description", nullable = false)
     @NotBlank
     @Size(min = 2, max = 120)
     private String description;
 
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
-    @OrderBy("dateTime DESC")
+    @OrderBy("name ASC ")
+    @JsonManagedReference(value = "restaurant-dishes")
     private List<Dish> dishes;
 
     public Restaurant(){
     }
 
-    public Restaurant(String name, Date registered, String description) {
-        this(null, name, registered, description);
+    public Restaurant(String name,String description) {
+        this(null, name, description);
     }
 
-    public Restaurant(Integer id, String name, Date registered, String description) {
+    public Restaurant(Integer id, String name, String description) {
         super(id, name);
-        this.registered = registered;
         this.description = description;
     }
 
-    public Date getRegistered() {
-        return registered;
-    }
-
-    public void setRegistered(Date registered) {
-        this.registered = registered;
-    }
 
     public String getDescription() {
         return description;
@@ -76,8 +74,7 @@ public class Restaurant extends AbstractNamedEntity{
         return "Restaurant{" +
                 "id=" + id +
                 ", name='" + name +
-                ", dateTime=" + registered  +
-                ", description='" + description + '\'' +
+                ", description='" + description +
                 '}';
     }
 }

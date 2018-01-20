@@ -9,6 +9,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -26,7 +28,7 @@ public class User extends AbstractNamedEntity {
 
     @Column(name = "password", nullable = false)
     @NotBlank
-    @Size(min = 5, max = 64)
+    @Size(min = 5, max = 100)
     private String password;
 
     @Column(name = "enabled", nullable = false, columnDefinition = "bool default true")
@@ -34,7 +36,7 @@ public class User extends AbstractNamedEntity {
 
     @Column(name = "registered", columnDefinition = "timestamp default now()")
     @NotNull
-    private Date registered = new Date();
+    private LocalDateTime registered = LocalDateTime.now();
 
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @Enumerated(EnumType.STRING)
@@ -47,7 +49,11 @@ public class User extends AbstractNamedEntity {
     public User() {
     }
 
-    public User(Integer id, String name, String nickname, String password, boolean enabled, Date registered, Collection<Role> roles) {
+    public User(Integer id, String name, String nickname, String password, Role role, Role... roles) {
+        this(id, name, nickname, password, true, LocalDateTime.now(), EnumSet.of(role, roles));
+    }
+
+    public User(Integer id, String name, String nickname, String password, boolean enabled, LocalDateTime registered, Collection<Role> roles) {
         super(id, name);
         this.nickname = nickname;
         this.password = password;
@@ -80,11 +86,11 @@ public class User extends AbstractNamedEntity {
         this.enabled = enabled;
     }
 
-    public Date getRegistered() {
+    public LocalDateTime getRegistered() {
         return registered;
     }
 
-    public void setRegistered(Date registered) {
+    public void setRegistered(LocalDateTime registered) {
         this.registered = registered;
     }
 
