@@ -1,8 +1,8 @@
-<h1>Voting system for deciding where to have lunch 
+<h1>Voting system for deciding where to have lunch </h1>
 
 (Приложение развернуто в application context: <b>vote</b>)
 
-<h2>Постановка задачи:
+<h2>Постановка задачи:</h2>
 
 Design and implement a REST API using Hibernate/Spring/SpringMVC (or Spring-Boot) without frontend.
 
@@ -19,7 +19,7 @@ Build a voting system for deciding where to have lunch.
     
 Each restaurant provides new menu each day.
 
-<h2>REST API. Доступная функциональность.
+<h2>REST API. Доступная функциональность.</h2>
 
 Подробные примеры наполнения POST/PUT запросов см. в разделе с CURL примерами
 
@@ -28,7 +28,7 @@ Each restaurant provides new menu each day.
 * **GET /vote/rest/v1/profile/results** - получение результатов голосования на сегодня (разрешено получать промежуточные итоги голосования до 11-00)
 * **POST /vote/rest/v1/profile/vote** - сохранение голоса текущего пользователя (функциональность не работает после 11-00 по времени сервера)
 
-<h3>Функциональность пользователя с правами Administrator (admin): 
+<h3>Функциональность пользователя с правами Administrator (admin): </h3>
 
 * **GET /vote/rest/v1/admin/restaurants** - список всех ресторанов (без меню)
 * **POST /vote/rest/v1/admin/restaurants** - внесение нового ресторана в базу 
@@ -65,7 +65,7 @@ Each restaurant provides new menu each day.
 
 <h3> Примеры CURL команд </h3>
 <b>!!</b> В БД при инициализации всем временным полям проставляются даты в зависимости от текущей даны ( now() ) следует учесть это в curl командах, передающих даты
-<h5> Administrator (управление ресторанами):
+<h5> Administrator (управление ресторанами):</h5>
 
 * GET /vote/rest/v1/admin/restaurants:
 > `curl http://localhost:8080/vote/rest/v1/admin/restaurants --user Admin1:admin`
@@ -76,7 +76,7 @@ Each restaurant provides new menu each day.
 * DELETE /vote/rest/v1/admin/restaurants/100004
 > `curl -X DELETE http://localhost:8080/vote/rest/v1/admin/restaurants/100004 --user Admin1:admin`
 
-<h5> Administrator (управление меню):
+<h5> Administrator (управление меню):</h5>
 
 * POST /vote/rest/v1/admin/restaurants/100005/dishes:
 > `curl -g -X POST -d "{\"name\":\"New dish in restaurant 2\",\"date\":\"2018-01-20\",\"price\":\"4.50\"}" -H "Content-Type:application/json;charset=UTF-8" http://localhost:8080/vote/rest/v1/admin/restaurants/100005/dishes --user  Admin1:admin`
@@ -85,7 +85,7 @@ Each restaurant provides new menu each day.
 * DELETE /vote/rest/v1/admin/restaurants/100005/dishes/100016
 > `curl -X DELETE http://localhost:8080/vote/rest/v1/admin/restaurants/100005/dishes/100016 --user Admin1:admin`
 
-<h5> Administrator (управление учетными записями пользователей):
+<h5> Administrator (управление учетными записями пользователей):</h5>
 
 * GET /rest/v1/admin/users
 > `curl http://localhost:8080/vote/rest/v1/admin/users --user Admin1:admin`
@@ -98,7 +98,7 @@ Each restaurant provides new menu each day.
 * DELETE /rest/v1/admin/users/100001
 > `curl -X DELETE http://localhost:8080/vote/rest/v1/admin/users/100001 --user Admin1:admin`
 
-<h5> Regular User (функциональность голосования):
+<h5> Regular User (функциональность голосования):</h5>
 
 * GET /vote/rest/v1/profile/restaurants:
 > `curl http://localhost:8080/vote/rest/v1/profile/restaurants --user Voter2:12345`
@@ -119,7 +119,7 @@ Each restaurant provides new menu each day.
 * GET /vote/rest/v1/profile/results?date=2018-01-20
 > `curl http://localhost:8080/vote/rest/v1/profile/results?date=2018-01-20 --user Voter2:12345`
 
-<h5> Regular User (Управление своей учетной записью):
+<h5> Regular User (Управление своей учетной записью):</h5>
 
 * GET /rest/v1/profile
 > `curl http://localhost:8080/vote/rest/v1/profile --user Voter1:12345`
